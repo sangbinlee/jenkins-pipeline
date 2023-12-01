@@ -91,8 +91,18 @@ jenkins-pipeline
 
 
 
-#
-  
+#  https://kanoos-stu.tistory.com/55   참조
+
+
+        
+        jenkins인스턴스 git clone
+        jenkins인스턴스 gradle build
+        jenkins인스턴스 docker build
+        jenkins인스턴스 docker push
+        jenkins인스턴스 -> server인스턴스 ssh접속
+        server인스턴스 docker pull
+        server인스턴스 docker run 
+          
   
     
     pipeline {
@@ -182,6 +192,13 @@ jenkins-pipeline
     }
   
   
+
+
+
+
+
+
+
   
   
   
@@ -192,8 +209,61 @@ jenkins-pipeline
 
 
 
-#
-#
+# Server인스턴스에 SSH 접속
+        ssh agent plugin
+
+        
+         pipeline {
+            agent any
+            stages { 
+                stage('SSH SERVER EC2') {
+                  steps {
+                    echo 'SSH'
+                    
+                    sshagent(['credentail 식별 값']) {
+                        sh 'ssh -o StrictHostKeyChecking=no [user name]@[ip address] "whoami"'
+                        sh "ssh -o StrictHostKeyChecking=no [user name]@[ip address] 'docker pull [이미지 이름]:[태그 이름]'"
+                        sh "ssh -o StrictHostKeyChecking=no [user name]@[ip address] 'docker run [이미지 이름]:[태그 이름]'"
+                    }
+                  }
+               }
+            }
+        }
+
+
+
+
+
+# slack 메세지를 전송
+
+        Dashboard -> Jenkins관리 -> 플러그인 관리 -> slack 검색 및 slack notification 선택 후 설치
+        
+        pipeline {
+            // 스테이지 별로 다른 거
+            agent any
+        
+            stages {
+                stage("foo") {
+                    steps {
+                        echo 'slack test'
+                    }
+                    post {
+                        success {
+                            slackSend channel: '#channel-name', color: 'good', message: "success"
+                        }
+                        failure {
+                            slackSend channel: '#channel-name', color: 'danger', message: "failure"
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
 #
 #
 #
