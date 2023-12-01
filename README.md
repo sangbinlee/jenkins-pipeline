@@ -349,8 +349,7 @@ jenkins-pipeline
 ![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/5fce62b1-de0b-410a-b696-e44bbe35ecbd)
 
 ![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/4d2e458b-7cbd-43c5-a2e5-aeb5ccb5bfe1)
-
-![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/cd9ac086-ab73-49ec-9712-266106fec3da)
+ 
 
 
 
