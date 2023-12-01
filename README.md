@@ -325,9 +325,35 @@ jenkins-pipeline
 
 
         
-#
-#
-#
+# https://hyeinisfree.tistory.com/23 참
+
+
+
+
+
+
+
+
+
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/0340c26b-c458-4175-94d2-1e2a0d4890d4)
+
+
+
+# https://fastcampus.co.kr/dev_online_cicd/?utm_source=google&utm_medium=cpc&utm_campaign=hq%5E230725%5E211745&utm_content=jenkins&utm_term=&gclid=CjwKCAiApaarBhB7EiwAYiMwqsSF2TJuYX7-S8Adj0ajRpP3lk-Zw4m5rbMNjR-2jCXbqDqtjaIXkBoCDiMQAvD_BwE
+
+
+
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/3b524e8b-397b-4ec5-aac5-a8a0503c9c90)
+
+
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/5fce62b1-de0b-410a-b696-e44bbe35ecbd)
+
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/4d2e458b-7cbd-43c5-a2e5-aeb5ccb5bfe1)
+
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/cd9ac086-ab73-49ec-9712-266106fec3da)
+
+
+
 #
 #
 #
