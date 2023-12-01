@@ -4,12 +4,12 @@ jenkins-pipeline
 
 
 
-#
+# sudo chmod 666 /var/run/docker.sock
 
 # Installed plugins 
 
 
-# jenkins-pipeline
+# jenkins-pipeline      버그
 
     
     pipeline {
@@ -264,8 +264,67 @@ jenkins-pipeline
 
 
 
+# https://myanjini.tistory.com/entry/Jenkins%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Docker-%EB%B9%8C%EB%93%9C%EB%B0%B0%ED%8F%AC 참조
+
+
+
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/14b1e2f3-bda6-409b-9595-951456e122b8)
+
+
+ 
+
+
+
 #
-#
+        
+        
+        pipeline {
+            agent any
+        
+            stages {
+                stage('Build') {
+                    steps {
+                        echo 'Building..'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        echo 'Testing..'
+                    }
+                }
+                stage('Deploy') {
+                    steps {
+                        echo 'Deploying....'
+                    }
+                }
+            }
+        }
+
+        
+        pipeline {
+          agent any
+          environment {
+            EXAMPLE_KEY = credentials('example-credentials-id') // Secret value is 'sec%ret'
+          }
+          stages {
+            stage('Example') {
+              steps {
+                  /* CORRECT */
+                  bat 'echo %EXAMPLE_KEY%'
+              }
+            }
+          }
+        }
+
+
+
+
+
+
+
+
+
+        
 #
 #
 #
