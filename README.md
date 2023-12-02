@@ -353,7 +353,33 @@ jenkins-pipeline
 
 
 
-#
+# docker-compose-jenkins.yml
+
+
+        https://lhamed.github.io/docker-jenkins/ 참조
+
+        sudo docker compose -f docker/docker-compose-jenkins.yml up -d
+                
+        version: '3.3'
+        services:
+          jenkins:
+            image: jenkins/jenkins:latest
+            restart: always
+            container_name: "jenkins"
+            user: root # volume 을 mount 해서 사용하면, 권한 관련 이슈가 일어나서 추가했습니다. 
+            ports:
+              - "8080:8080"
+            volumes:
+              - ${마운트 대상폴더경로를 입력하세요!}:/var/jenkins_home
+              - /var/run/docker.sock:/var/run/docker.sock 
+            privileged: true  # volume 을 mount 해서 사용하면, 권한 관련 이슈가 일어나서 추가했습니다.         
+        
+
+
+
+
+
+
 #
 #
 #
