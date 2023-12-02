@@ -408,8 +408,262 @@ jenkins-pipeline
 #
 #
 #
+# catalog-back.git
+        
+        pipeline {
+            agent any
+        
+            tools {
+                jdk('jdk17')
+            }
+            stages {
+                stage('■■■■■■■■■ ■■■■■■■■■ version') {
+                    steps {
+                        echo 'Hello World'
+                        script {
+                        	sh "java -version"
+                        }
+                    }
+                }
+                
+                stage('■■■■■■■■■ ■■■■■■■■■ clone Prepare') {
+                    steps {
+                        git branch: 'main', credentialsId: 'sangbinlee',
+                            url: 'https://github.com/sangbinlee/catalog-back.git'
+                    }
+                    
+                    post {
+                        success { 
+                            sh 'echo "Successfully Cloned Repository"'
+                        }
+                        failure {
+                            sh 'echo "Fail Cloned Repository"'
+                        }
+                    }    
+                }
+                
+                stage('■■■■■■■■■ ■■■■■■■■■ Build') { 
+                    steps {
+                    	// gralew이 있어야됨. git clone해서 project를 가져옴.
+                        sh 'chmod +x gradlew'
+                        //sh  './gradlew clean bootJar'
+                        // sh  './gradlew clean build'
+                        sh  './gradlew build --warning-mode all'
+        
+        
+                        sh 'ls -al ./build'
+                    }
+                    post {
+                        success {
+                            echo '■■■■■■■■■ gradle build success'
+                        }
+        
+                        failure {
+                            echo '■■■■■■■■■ gradle build failed'
+                        }
+                    }
+                }
+                stage('■■■■■■■■■ ■■■■■■■■■ Test') { 
+                    steps {
+                        echo  '테스트 단계 xxxxxxxxxxxxxxxxx.'
+                    }
+                }
+                stage('■■■■■■■■■ ■■■■■■■■■ Docker Rm') {
+                    steps {
+                        sh 'echo "■■■■■■■■■ Docker Rm Start"'
+                        sh """
+                         docker stop catalog-back
+                         docker rm catalog-back
+                         docker rmi -f sangbinlee/catalog-back
+                        """
+                    }
+                    
+                    post {
+                        success { 
+                            sh 'echo "Docker Rm Success"'
+                        }
+                        failure {
+                            sh 'echo "Docker Rm Fail"'
+                        }
+                    }
+                }
+                
+                stage('■■■■■■■■■ ■■■■■■■■■ Dockerizing'){
+                    steps{
+                        sh 'echo "■■■■■■■■■  Image Bulid Start"'
+                        sh 'docker build -t sangbinlee/catalog-back .'
+                    }
+                    post {
+                        success {
+                            sh 'echo "Bulid Docker Image Success"'
+                        }
+        
+                        failure {
+                            sh 'echo "Bulid Docker Image Fail"'
+                        }
+                    }
+                }
+                
+                stage('Deploy') {
+                    steps {
+                        sh 'docker run --name catalog-back -d -p 7080:7080 sangbinlee/catalog-back'
+                    }
+        
+                    post {
+                        success {
+                            echo 'success'
+                        }
+        
+                        failure {
+                            echo 'failed'
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        
+
+
+
+
+
+
+
+
+
+
 #
-#
+
+
+
+
+        
+        
+        
+        pipeline {
+        
+            agent {
+                docker { image 'node:20.10.0-alpine3.18' }
+            }
+            
+            // environment {
+            //     DOCKER_COMPOSE_VERSION = '1.29.2'
+            // }
+            stages {
+                stage('♥ sample Hello') {
+                    steps {
+                        echo 'Hello World =  https://www.jenkins.io/doc/book/pipeline/docker/'
+                    }
+                }
+                stage('♥ node version    ') {
+                    steps {
+                        echo 'node version ..................'
+                        script {
+                        	sh "node --version"
+                        }
+                    }
+                }
+                stage('■■■■■■■■■ ■■■■■■■■■ clone Prepare') {
+                    steps {
+                        git branch: 'main', credentialsId: 'mini-do',
+                            url: 'https://github.com/sangbinlee/mini-do.git'
+                    }
+                    
+                    post {
+                        success { 
+                            sh 'echo "Successfully Cloned Repository"'
+                        }
+                        failure {
+                            sh 'echo "Fail Cloned Repository"'
+                        }
+                    }    
+                }
+                stage('♥ ll ') {
+                    steps {
+                        echo '♥ ls -al  ..................'
+                        script {
+                        	sh "ls -al"
+                        }
+                    }
+                }
+                stage('♥ yarn install ') {
+                    steps {
+                        echo '♥ yarn install  ..................'
+                        script {
+                        // 	sh "yarn install"
+                        	sh "yarn install"
+                        }
+                    }
+                }
+                stage('♥ yarn build') {
+                    steps {
+                        echo '♥ yarn build  ..................'
+                        script {
+                        // 	sh "yarn build"
+                        	sh "npm run build"
+                        }
+                    }
+                }
+                stage('♥ yarn --version') {
+                    steps {
+                        echo '♥ yarn --version  ..................'
+                        script {
+                        	sh "yarn --version"
+                        }
+                    }
+                }
+                // stage('♥ Start Server in Background') {
+                //     steps {
+                //         echo '♥ Start Server in Background ..................'
+                //         script {
+                //         // 	sh "npm install pm2 -g"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn start') {
+                //     steps {
+                //         echo '♥ yarn start  ..................'
+                //         script {
+                //         	sh "yarn start"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn start') {
+                //     steps {
+                //         echo '♥ yarn start  ..................'
+                //         script {
+                //         	sh "yarn start"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn start') {
+                //     steps {
+                //         echo '♥ yarn start  ..................'
+                //         script {
+                //         	sh "yarn start"
+                //         }
+                //     }
+                // }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #
 #
 #
