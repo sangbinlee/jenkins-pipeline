@@ -665,14 +665,292 @@ jenkins-pipeline
 
 
 #
+
+        
+        # CONTAINER ID 확인
+        sudo docker ps -a
+        # log 확인
+        sudo docker logs [CONTAINER ID]
+        -----------------------------------------
+        # 혹은 아래와 같이도 확인가능
+        ## 1. 링크된 볼륨
+        cat /home/opendocs/jenkins/secrets/initialAdminPassword
+        ## 2. 컨테이너 접속해서 확인
+        docker exec -it jenkins /bin/bash
+        cat /var/jenkins_home/secrets/initialAdminPassword
+        
+
+
+
+
+
+
+#
+
+        docker run --name nginx -d -p 80:80 --restart always nginx:1.22.1-alpine
+
+#
+
+
+
+        
+        services:
+          nginx:
+            container_name: nginx
+            image: nginx:1.22.1-alpine
+            restart: always
+            ports:
+              - 80:80
+        
+                
+        docker compose up -d
+
+#
+    
+        docker compose ps
+        docker ps
+        
+#
+
+        
+        docker compose down
+        
+
+
+#
+
+        
+        services:
+          nginx:
+            container_name: nginx
+            image: nginx:1.22.1-alpine
+            restart: always
+            ports:
+              - 80:80
+            volumes:
+              - /etc/letsencrypt:/etc/letsencrypt
+              - /var/lib/letsencrypt:/var/lib/letsencrypt
+              - ${DOCKER_COMPOSE_ROOT}/nginx/sites.conf:/etc/nginx/conf.d/sites.conf
+              - ${DOCKER_COMPOSE_ROOT}/nginx/sites-enabled:/etc/nginx/sites-enabled
+        
+        
+        
+
+
+
+
+
+
+
+#
+        
+        
+        // Nginx 이미지 받기
+        $ docker pull nginx
+        
+        // Nginx 컨테이너 올리기
+        $ docker run --name proxy-server -d -p 443:443 -p 80:80 nginx
+        
+        // 컨테이너 접속
+        $ docker exec -it proxy-server bash
+        출처: https://lasbe.tistory.com/176 [LasBe's Upgrade:티스토리]
+
+
+
+
+
+
+
+
+
 #
 #
-#
-#
-#
-#
-#
-#
+
+
+        
+        pipeline {
+        
+            agent any
+            // agent {
+            //     docker { image 'node:20.10.0-alpine3.18' }
+            // }
+            
+            // environment {
+            //     DOCKER_COMPOSE_VERSION = '1.29.2'
+            // }
+            stages {
+                stage('♥ sample Hello ♥♥♥♥♥♥♥♥♥♥ pwd ') {
+                    steps {
+                        echo 'Hello World =  https://www.jenkins.io/doc/book/pipeline/docker/'
+                        // sh 'apt  install docker-compose'
+                        // sh 'docker-compose -version '
+                        sh 'pwd '
+                    }
+                }
+                // stage('♥ node version    ') {
+                //     steps {
+                //         echo 'node version ..................'
+                //         script {
+                //         	sh "node --version"
+                //         }
+                //     }
+                // }
+                stage('■■■■■■■■■ ■■■■■■■■■ clone Prepare') {
+                    steps {
+                        git branch: 'main', credentialsId: 'mini-do',
+                            url: 'https://github.com/sangbinlee/mini-do.git'
+                    }
+                    
+                    post {
+                        success { 
+                            sh 'echo "Successfully Cloned Repository"'
+                        }
+                        failure {
+                            sh 'echo "Fail Cloned Repository"'
+                        }
+                    }    
+                }
+                stage('♥ ll ') {
+                    steps {
+                        echo '♥ ls -al  ..................'
+                        script {
+                        	sh "ls -al"
+                        }
+                    }
+                }
+                // stage('♥ yarn install ') {
+                //     steps {
+                //         echo '♥ yarn install  ..................'
+                //         script {
+                //         	sh "yarn install"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn build') {
+                //     steps {
+                //         echo '♥ yarn build  ..................'
+                //         script {
+                //         	sh "yarn build"
+                //         // 	sh "npm run build"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn --version') {
+                //     steps {
+                //         echo '♥ yarn --version  ..................'
+                //         script {
+                //         	sh "yarn --version"
+                //         }
+                //     }
+                // }
+                // stage('♥ Start Server in Background') {
+                //     steps {
+                //         echo '♥ Start Server in Background ..................'
+                //         script {
+                //         // 	sh "npm install pm2 -g"
+                //         }
+                //     }
+                // }
+                stage('♥ docker build ................') {
+                    steps {
+                        echo '♥ docker build ..................'
+                        script {
+                        	sh "docker build -t mini-do:latest ."
+                        }
+                    }
+                }
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker images') {
+                    steps {
+                        echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker images  ..................'
+                        script {
+                        	sh "docker images"
+                        }
+                    }
+                }
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker ps') {
+                    steps {
+                        echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker ps  ..................'
+                        script {
+                        	sh "docker ps"
+                        }
+                    }
+                }
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker ps -a') {
+                    steps {
+                        echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker ps -a ..................'
+                        script {
+                        	sh "docker ps -a"
+                        }
+                    }
+                }
+                // stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker run') {
+                //     steps {
+                //         echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker run  ..................'
+                //         // sh 'docker compose down'
+                //         // sh 'docker compose up -d'
+                //         // script {
+                //         // 	sh "docker run mini-do -p 3000:3000 -v /app/node_modules -v .:/app "
+                //         // 	sh "docker run mini-do -p 3000:3000"
+                //             sh ' docker rm -f mini-do'
+                //             sh 'docker run --name mini-do -d -p 3000:3000 mini-do:latest'
+                //         // }
+                //     }
+                // }
+                
+                
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker run     ...........  Deploy............') {
+                    steps {
+                        sh 'docker rm -f mini-do'
+                        sh 'docker run --name mini-do -d -p 3000:3000 mini-do:latest'
+                    }
+        
+                    post {
+                        success {
+                            echo 'success'
+                        }
+        
+                        failure {
+                            echo 'failed'
+                        }
+                    }
+                }
+                
+                
+                
+                
+                
+                // stage('♥ docker-compose --version') {
+                //     steps {
+                //         echo '♥ docker-compose --version  ..................'
+                //         script {
+                //         	sh 'sudo curl -sSL "https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+                //         	sh "chmod +x /usr/local/bin/docker-compose"
+                //         	sh "docker-compose --version"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn start') {
+                //     steps {
+                //         echo '♥ yarn start  ..................'
+                //         script {
+                //         	sh "yarn start"
+                //         }
+                //     }
+                // }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 #
 #
 #
