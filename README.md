@@ -380,7 +380,31 @@ jenkins-pipeline
 
 
 
-#
+# How do I run a node.js app as a background service?
+
+    https://stackoverflow.com/questions/4018154/how-do-i-run-a-node-js-app-as-a-background-service
+    
+    
+    
+    
+     
+        
+        Try to run this command if you are using nohup -
+        
+        nohup npm start 2>/dev/null 1>/dev/null&
+        You can also use forever to start server
+        
+        forever start -c "npm start" ./ 
+        PM2 also supports npm start
+        
+        pm2 start npm -- start
+        
+        
+
+
+
+
+
 #
 #
 #
