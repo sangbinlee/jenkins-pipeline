@@ -952,6 +952,213 @@ jenkins-pipeline
 
 
 #
+
+        
+        
+        
+        
+        pipeline {
+        
+            agent any
+            // agent {
+            //     docker { image 'node:20.10.0-alpine3.18' }
+            // }
+            
+            // environment {
+            //     DOCKER_COMPOSE_VERSION = '1.29.2'
+            // }
+            stages {
+                stage('♥ sample Hello ♥♥♥♥♥♥♥♥♥♥ pwd ') {
+                    steps {
+                        echo 'Hello World =  https://www.jenkins.io/doc/book/pipeline/docker/'
+                        // sh 'apt  install docker-compose'
+                        // sh 'docker-compose -version '
+                        sh 'pwd '
+                    }
+                }
+                // stage('♥ node version    ') {
+                //     steps {
+                //         echo 'node version ..................'
+                //         script {
+                //         	sh "node --version"
+                //         }
+                //     }
+                // }
+                stage('■■■■■■■■■ ■■■■■■■■■ clone Prepare') {
+                    steps {
+                        git branch: 'main', credentialsId: 'mini-do',
+                            url: 'https://github.com/sangbinlee/mini-do.git'
+                    }
+                    
+                    post {
+                        success { 
+                            sh 'echo "Successfully Cloned Repository"'
+                        }
+                        failure {
+                            sh 'echo "Fail Cloned Repository"'
+                        }
+                    }    
+                }
+                stage('♥ ll ') {
+                    steps {
+                        echo '♥ ls -al  ..................'
+                        script {
+                        	sh "ls -al"
+                        }
+                    }
+                }
+                // stage('♥ yarn install ') {
+                //     steps {
+                //         echo '♥ yarn install  ..................'
+                //         script {
+                //         	sh "yarn install"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn build') {
+                //     steps {
+                //         echo '♥ yarn build  ..................'
+                //         script {
+                //         	sh "yarn build"
+                //         // 	sh "npm run build"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn --version') {
+                //     steps {
+                //         echo '♥ yarn --version  ..................'
+                //         script {
+                //         	sh "yarn --version"
+                //         }
+                //     }
+                // }
+                // stage('♥ Start Server in Background') {
+                //     steps {
+                //         echo '♥ Start Server in Background ..................'
+                //         script {
+                //         // 	sh "npm install pm2 -g"
+                //         }
+                //     }
+                // }
+                stage('♥ docker rm  ♥ docker build ................') {
+                    steps {
+                        echo '♥ docker build ..................'
+                        sh 'docker rm -f mini-do'
+                    // 	sh "docker rmi -f mini-do"
+                    // 	sh 'npm install -D @prisma/nextjs-monorepo-workaround-plugin'
+                    	sh "docker build -t mini-do:latest ."
+                        // script {
+                        //     sh 'docker rm -f mini-do'
+                        // 	sh "docker rmi -f mini-do"
+                        // 	sh "docker build -t mini-do:latest ."
+                        // }
+                    }
+                    post {
+                        success { 
+                            sh 'echo "Docker Rm Success"'
+                        }
+                        failure {
+                            sh 'echo "Docker Rm Fail"'
+                        }
+                    }
+                }
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker images') {
+                    steps {
+                        echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker images  ..................'
+                        script {
+                        	sh "docker images"
+                        }
+                    }
+                }
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker ps') {
+                    steps {
+                        echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker ps  ..................'
+                        script {
+                        	sh "docker ps"
+                        }
+                    }
+                }
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker ps -a') {
+                    steps {
+                        echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker ps -a ..................'
+                        script {
+                        	sh "docker ps -a"
+                        }
+                    }
+                }
+                
+                
+                stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker run     ...........  Deploy............') {
+                    steps {
+                        // sh 'docker run --name mini-do -d -p 3000:3000 mini-do:latest'
+                        sh 'docker run --name mini-do -d -p 3000:3000 mini-do:latest -v /app/node_modules -v .:/app'
+                    }
+        
+                    post {
+                        success {
+                            echo 'success'
+                        }
+        
+                        failure {
+                            echo 'failed'
+                        }
+                    }
+                }
+                
+                
+                
+                
+                // stage('♥ ■■■■■■■■■ ■■■■■■■■■ docker run') {
+                //     steps {
+                //         echo '♥ ■■■■■■■■■ ■■■■■■■■■ docker run  ..................'
+                //         // sh 'docker compose down'
+                //         // sh 'docker compose up -d'
+                //         // script {
+                //         // 	sh "docker run mini-do -p 3000:3000 -v /app/node_modules -v .:/app "
+                //         // 	sh "docker run mini-do -p 3000:3000"
+                //             sh ' docker rm -f mini-do'
+                //             sh 'docker run --name mini-do -d -p 3000:3000 mini-do:latest'
+                //         // }
+                //     }
+                // }
+                
+                // stage('♥ docker-compose --version') {
+                //     steps {
+                //         echo '♥ docker-compose --version  ..................'
+                //         script {
+                //         	sh 'sudo curl -sSL "https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+                //         	sh "chmod +x /usr/local/bin/docker-compose"
+                //         	sh "docker-compose --version"
+                //         }
+                //     }
+                // }
+                // stage('♥ yarn start') {
+                //     steps {
+                //         echo '♥ yarn start  ..................'
+                //         script {
+                //         	sh "yarn start"
+                //         }
+                //     }
+                // }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #
 #
 #
