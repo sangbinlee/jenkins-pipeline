@@ -1535,7 +1535,19 @@ jenkins-pipeline
         
 
 
-#
+# https://roadmap.sh/full-stack
+![image](https://github.com/sangbinlee/jenkins-pipeline/assets/4024414/87ab2f0d-7d64-4352-94e2-9a07ac07f892)
+
+
+
+
+
+
+
+
+
+
+
 #
 #
 #
